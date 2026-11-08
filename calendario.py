@@ -343,6 +343,24 @@ def _plegar(linea: str) -> str:
     return "\r\n ".join(trozos)
 
 
+# Eventos de mas dias que esto se publican como dos marcas de un dia (empieza / termina).
+# En la vista de mes, Google pone arriba las barras de varios dias, las mas largas primero:
+# periodos de semanas (Pirates Party, Store Tournament...) tapaban a los Regionales de 2 dias,
+# que acababan escondidos en el "+ mas". Asi los fines de semana importantes quedan arriba.
+MAX_DIAS_BARRA = 4
+
+
+def _vevent(uid: str, titulo: str, ini: date, fin_excl: date, e: dict, sello: str) -> list[str]:
+    notas = e["notas"] + f"\n\n{e['url']}"
+    ev = ["BEGIN:VEVENT", f"UID:{uid}", f"DTSTAMP:{sello}",
+          f"DTSTART;VALUE=DATE:{ini:%Y%m%d}", f"DTEND;VALUE=DATE:{fin_excl:%Y%m%d}",
+          f"SUMMARY:{_esc(titulo)}", f"DESCRIPTION:{_esc(notas)}", f"URL:{e['url']}",
+          "TRANSP:TRANSPARENT"]
+    if e["lugar"]:
+        ev.append(f"LOCATION:{_esc(e['lugar'])}")
+    return ev + ["END:VEVENT"]
+
+
 def generar_ics(eventos: list[dict]) -> str:
     sello = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//optcg-calendario//ES", "CALSCALE:GREGORIAN",
@@ -350,17 +368,19 @@ def generar_ics(eventos: list[dict]) -> str:
            "X-WR-CALDESC:Lanzamientos y eventos europeos de ONE PIECE CARD GAME (web oficial)",
            "X-WR-TIMEZONE:Europe/Madrid", "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
            "X-PUBLISHED-TTL:PT12H"]
+    un_dia = timedelta(days=1)
     for e in sorted(eventos, key=lambda e: (e["inicio"], e["titulo"])):
-        ini = date.fromisoformat(e["inicio"])
-        fin = date.fromisoformat(e["fin"]) + timedelta(days=1)  # DTEND exclusivo
-        notas = e["notas"] + f"\n\n{e['url']}"
-        out += ["BEGIN:VEVENT", f"UID:{e['uid']}", f"DTSTAMP:{sello}",
-                f"DTSTART;VALUE=DATE:{ini:%Y%m%d}", f"DTEND;VALUE=DATE:{fin:%Y%m%d}",
-                f"SUMMARY:{_esc(e['titulo'])}", f"DESCRIPTION:{_esc(notas)}", f"URL:{e['url']}",
-                "TRANSP:TRANSPARENT"]
-        if e["lugar"]:
-            out.append(f"LOCATION:{_esc(e['lugar'])}")
-        out.append("END:VEVENT")
+        ini, fin = date.fromisoformat(e["inicio"]), date.fromisoformat(e["fin"])
+        if (fin - ini).days + 1 <= MAX_DIAS_BARRA:
+            out += _vevent(e["uid"], e["titulo"], ini, fin + un_dia, e, sello)  # DTEND exclusivo
+            continue
+        periodo = f"Del {ini:%d/%m/%Y} al {fin:%d/%m/%Y}."
+        marcado = dict(e, notas=f"{periodo}\n{e['notas']}")
+        base = e["uid"].split("@", 1)[0]
+        out += _vevent(f"{base}-ini@optcg-calendario", f"▶️ Empieza · {e['titulo']}",
+                       ini, ini + un_dia, marcado, sello)
+        out += _vevent(f"{base}-fin@optcg-calendario", f"⏹️ Termina · {e['titulo']}",
+                       fin, fin + un_dia, marcado, sello)
     out.append("END:VCALENDAR")
     return "\r\n".join(_plegar(l) for l in out) + "\r\n"
 
