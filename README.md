@@ -1,26 +1,46 @@
-# Optcg-calendar-europe
+# 🏴‍☠️ One Piece TCG · Calendario de Europa
 
-Calendario (`.ics`) con los lanzamientos y eventos europeos de ONE PIECE CARD GAME, generado a partir de la web oficial [en.onepiece-cardgame.com](https://en.onepiece-cardgame.com/events/).
+Calendario con los **lanzamientos y eventos europeos de ONE PIECE CARD GAME**, sacado de la [web oficial](https://en.onepiece-cardgame.com/events/) y **actualizado automáticamente cada día**.
 
-- `calendario.py` — scraper (solo biblioteca estándar de Python). Genera `docs/optcg-europa.ics` y guarda el historial en `estado.json`.
-- `.github/workflows/actualizar.yml` — lo ejecuta cada día y commitea el `.ics` actualizado.
+### ➕ [Añadir a Google Calendar](https://calendar.google.com/calendar/render?cid=webcal%3A%2F%2Fraw.githubusercontent.com%2Fcdelgado813%2FOptcg-calendar-europe%2Fmain%2Fdocs%2Foptcg-europa.ics)
 
-Para suscribirse: Google Calendar → *Otros calendarios* → **+** → *Desde URL* → `https://calendar.poordevelopers.com/optcg-eu.ics`
-(dirección directa, sin el Worker: `https://raw.githubusercontent.com/cdelgado813/Optcg-calendar-europe/main/docs/optcg-europa.ics`).
+O copia esta dirección:
 
-## Worker `calendar.poordevelopers.com`
+```
+https://raw.githubusercontent.com/cdelgado813/Optcg-calendar-europe/main/docs/optcg-europa.ics
+```
 
-`worker/` es un Worker de Cloudflare (`poordev-wrkr-cal-1-pro`) que da una URL amigable y sirve el `.ics` con `Content-Type: text/calendar`, cacheado 1 h en el borde. Para añadir otro calendario basta con una entrada en `CALENDARIOS` de `worker/src/index.js`.
+## Qué incluye
 
-Despliegue (crea el Worker, el registro DNS y el certificado; sin Terraform, decisión consciente por ser un recurso único y trivial):
+| | |
+|---|---|
+| 📦 **Lanzamientos** | Boosters (OP, EB, PRB…) y Starter Decks, con su fecha oficial |
+| 🏆 **Regionales** | Cada Regional europeo con ciudad, sede y organizador |
+| 🏪 **Store Championships** y eventos de tienda | Store Treasure Cup, eventos de lanzamiento, Pirates Party… |
+| 💰 **Treasure Cups** · ⚔️ **Extra Battle** · 🎲 **Side events** | Los que se juegan junto a los Regionales |
+| 🏆 **Finals** · 🎟️ **LCQ** · 🎪 **BANDAI CARD GAMES Fest** | Finales de temporada y grandes eventos |
+| 📝 **Inscripciones** | Cuándo abre el registro para Europa |
 
-- Con Node ≥ 22: `cd worker && npx wrangler deploy`
-- Sin wrangler (p. ej. la Pi con Node 20): `worker/desplegar.sh`, con `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID` en el entorno.
+Cada evento lleva en la descripción el enlace a su página oficial. Cuando la web solo da el mes (p. ej. «August 2026 onwards»), el evento aparece el día 1 marcado como *(fecha aprox.: mes)*.
 
-Token mínimo (plantilla *Custom token*): **Account › Workers Scripts: Edit** + **Zone › Workers Routes: Edit**, **Zone › DNS: Edit** y **Zone › Zone: Read**, limitado a la zona `poordevelopers.com`.
+## Cómo suscribirse
 
-Coste: plan Free de Workers (100k peticiones/día); con la caché de 1 h el uso real es mínimo.
+- **Google Calendar** (desde el ordenador; la app del móvil no lo permite): usa el enlace de arriba, o *Otros calendarios* → **+** → *Desde URL* y pega la dirección. Una vez añadido, aparece también en el móvil.
+- **iPhone / Mac**: Ajustes → Calendario → Cuentas → Añadir cuenta → Otra → *Añadir calendario suscrito*, y pega la dirección.
+- **Outlook**: *Agregar calendario* → *Suscribirse desde la web*.
 
-Google relee los calendarios suscritos por su cuenta (normalmente cada 12-24 h), así que un cambio en la web puede tardar hasta un día en verse.
+Es una suscripción: los cambios llegan solos. Google refresca los calendarios suscritos cuando quiere (normalmente cada 12-24 h), así que algo nuevo en la web puede tardar hasta un día en verse.
 
-Ejecutar a mano: `python3 -I calendario.py`.
+## Cómo funciona
+
+- [`calendario.py`](calendario.py) lee la web oficial (edición en inglés NA/EU): el listado de productos y cada página de evento, quedándose con la sección **Europe**. Solo usa la biblioteca estándar de Python.
+- Una [GitHub Action](.github/workflows/actualizar.yml) lo ejecuta cada día a las 05:17 UTC y guarda el resultado en [`docs/optcg-europa.ics`](docs/optcg-europa.ics).
+- [`estado.json`](estado.json) guarda el historial: los eventos pasados se conservan y los futuros se rehacen en cada ejecución, así que un cambio de fecha o una cancelación se reflejan solos.
+
+Para generarlo a mano: `python3 -I calendario.py`
+
+¿Falta algún evento o hay uno mal? Abre un [issue](../../issues).
+
+---
+
+<sub>Proyecto de fans, no oficial. ONE PIECE CARD GAME © Eiichiro Oda/Shueisha, Toei Animation, BANDAI. Los datos son de la web oficial de Bandai; ante cualquier duda, manda lo que diga allí.</sub>

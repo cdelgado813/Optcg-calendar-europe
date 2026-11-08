@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["calendario.py", ".github/workflows/actualizar.yml", "docs/index.html"]
+    paths: ["calendario.py", ".github/workflows/actualizar.yml"]
 
 permissions:
   contents: write

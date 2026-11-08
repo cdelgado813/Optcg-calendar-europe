@@ -36,7 +36,7 @@ from pathlib import Path
 
 BASE_URL = "https://en.onepiece-cardgame.com"
 AQUI = Path(__file__).resolve().parent
-SALIDA = AQUI / "docs" / "optcg-europa.ics"
+SALIDA = AQUI / "docs" / "optcg-europa.ics"  # no mover: es la URL pública de suscripción
 ESTADO = AQUI / "estado.json"
 UA = "optcg-calendario/1.0 (calendario personal, 1 vez al dia)"
 TIMEOUT = 30
