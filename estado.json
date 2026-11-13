@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-12T13:45:44",
+ "actualizado": "2026-11-13T13:05:33",
  "eventos": {
   "2072f38e0df654a9f00c@optcg-calendario": {
    "uid": "2072f38e0df654a9f00c@optcg-calendario",
@@ -244,8 +244,8 @@
   "20dcf687a0bc82a6bbe3@optcg-calendario": {
    "uid": "20dcf687a0bc82a6bbe3@optcg-calendario",
    "titulo": "📦 Lanzamiento: ST-38 STARTER DECK -Baroque Works-",
-   "inicio": "2026-12-19",
-   "fin": "2026-12-19",
+   "inicio": "2026-12-18",
+   "fin": "2026-12-18",
    "url": "https://en.onepiece-cardgame.com/products/st38.html",
    "lugar": "",
    "notas": "STARTER DECK -Baroque Works- [ST-38]\nFecha de lanzamiento oficial (edición inglesa NA/EU).",
@@ -830,6 +830,26 @@
    "lugar": "",
    "notas": "Flame-Flame Fruit Coliseum\nOrganiza: CS-International\nSede: ",
    "origen": "https://en.onepiece-cardgame.com/events/flameflame_Coliseum.html"
+  },
+  "80cdc330123edfa9ae1c@optcg-calendario": {
+   "uid": "80cdc330123edfa9ae1c@optcg-calendario",
+   "titulo": "📅 Evento: ONE PIECE CARD GAME NIKE Collaboration Tournament",
+   "inicio": "2027-02-01",
+   "fin": "2027-04-30",
+   "url": "https://en.onepiece-cardgame.com/events/02_573.html",
+   "lugar": "",
+   "notas": "ONE PIECE CARD GAME NIKE Collaboration Tournament\nPeriodo: February 1 – April 30, 2027",
+   "origen": "https://en.onepiece-cardgame.com/events/02_573.html"
+  },
+  "c5af71c54892b8a0138f@optcg-calendario": {
+   "uid": "c5af71c54892b8a0138f@optcg-calendario",
+   "titulo": "🏪 Evento de lanzamiento: ST-37 & ST-38 Release Event",
+   "inicio": "2026-12-18",
+   "fin": "2027-01-10",
+   "url": "https://en.onepiece-cardgame.com/events/store-tournament-st37-38.html",
+   "lugar": "",
+   "notas": "ST-37 & ST-38 Release Event\nPeriodo: December 18, 2026 – January 10, 2027",
+   "origen": "https://en.onepiece-cardgame.com/events/store-tournament-st37-38.html"
   },
   "b35d06468bdf890fe59b@optcg-calendario": {
    "uid": "b35d06468bdf890fe59b@optcg-calendario",
